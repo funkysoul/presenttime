@@ -6,6 +6,9 @@ target 'presenttime' do
   # use_frameworks!
 
   # Pods for presenttime
+  pod 'AppCenter/Crashes', '~> 1.1.0'
+  pod 'AppCenter/Analytics', '~> 1.1.0'
+  pod 'AppCenterReactNativeShared', '~> 1.1.0'
 
   pod 'Firebase/Core'
   pod 'Firebase/Database'

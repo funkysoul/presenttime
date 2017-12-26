@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -56,6 +55,10 @@
 		DD31E7B11D0A44F0B453E86A /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC5E7350FCEF49F09B9CCD30 /* Zocial.ttf */; };
 		E99DA35F47C2DA84C1A2FF5F /* libPods-presenttime-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CB8ADC5557691F6EC217FAFE /* libPods-presenttime-tvOS.a */; };
 		EC19579BEE0C4531889DC7E1 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4A717763FEC4171988DDE7A /* Entypo.ttf */; };
+		3CBAB90AABA4498DBE111284 /* libAppCenterReactNative.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D76171EE24CA4C978D631B49 /* libAppCenterReactNative.a */; };
+		B0906FB480F64A4295F7B733 /* AppCenter-Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = C2AFB459772848D4B3960D47 /* AppCenter-Config.plist */; };
+		ACC059A11846461FBA196BB6 /* libAppCenterReactNativeAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 32A1449736904398A757DA33 /* libAppCenterReactNativeAnalytics.a */; };
+		DA329A12DCFB4528B89C2D86 /* libAppCenterReactNativeCrashes.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AD85607EC3441CC9CC1FDB9 /* libAppCenterReactNativeCrashes.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -396,6 +399,13 @@
 		F168C18042904C0D8C99E1E1 /* RNFirebase.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNFirebase.xcodeproj; path = "../node_modules/react-native-firebase/ios/RNFirebase.xcodeproj"; sourceTree = "<group>"; };
 		F598FEE252DEE2506006F50A /* Pods-presenttime.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-presenttime.release.xcconfig"; path = "Pods/Target Support Files/Pods-presenttime/Pods-presenttime.release.xcconfig"; sourceTree = "<group>"; };
 		FC5E7350FCEF49F09B9CCD30 /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/native-base/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
+		0140E75CF0774A1BB67C85DF /* AppCenterReactNative.xcodeproj */ = {isa = PBXFileReference; name = "AppCenterReactNative.xcodeproj"; path = "../node_modules/appcenter/ios/AppCenterReactNative.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		D76171EE24CA4C978D631B49 /* libAppCenterReactNative.a */ = {isa = PBXFileReference; name = "libAppCenterReactNative.a"; path = "libAppCenterReactNative.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		C2AFB459772848D4B3960D47 /* AppCenter-Config.plist */ = {isa = PBXFileReference; name = "AppCenter-Config.plist"; path = "presenttime/AppCenter-Config.plist"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = text.plist.xml; explicitFileType = undefined; includeInIndex = 0; };
+		1F8B30EE4DB64A9096CF4633 /* AppCenterReactNativeAnalytics.xcodeproj */ = {isa = PBXFileReference; name = "AppCenterReactNativeAnalytics.xcodeproj"; path = "../node_modules/appcenter-analytics/ios/AppCenterReactNativeAnalytics.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		32A1449736904398A757DA33 /* libAppCenterReactNativeAnalytics.a */ = {isa = PBXFileReference; name = "libAppCenterReactNativeAnalytics.a"; path = "libAppCenterReactNativeAnalytics.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		95EDCBD8001C4303AC16CFAE /* AppCenterReactNativeCrashes.xcodeproj */ = {isa = PBXFileReference; name = "AppCenterReactNativeCrashes.xcodeproj"; path = "../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		3AD85607EC3441CC9CC1FDB9 /* libAppCenterReactNativeCrashes.a */ = {isa = PBXFileReference; name = "libAppCenterReactNativeCrashes.a"; path = "libAppCenterReactNativeCrashes.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -428,6 +438,9 @@
 				64C60281595343568638E644 /* libRNFirebase.a in Frameworks */,
 				04FA1A9372B1476EB6BBC2DD /* libBVLinearGradient.a in Frameworks */,
 				683B49577403CD9BA64FCF1B /* libPods-presenttime.a in Frameworks */,
+				3CBAB90AABA4498DBE111284 /* libAppCenterReactNative.a in Frameworks */,
+				ACC059A11846461FBA196BB6 /* libAppCenterReactNativeAnalytics.a in Frameworks */,
+				DA329A12DCFB4528B89C2D86 /* libAppCenterReactNativeCrashes.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -638,6 +651,9 @@
 				139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */,
 				F168C18042904C0D8C99E1E1 /* RNFirebase.xcodeproj */,
 				DAE7096946F84C12925EF11A /* BVLinearGradient.xcodeproj */,
+				0140E75CF0774A1BB67C85DF /* AppCenterReactNative.xcodeproj */,
+				1F8B30EE4DB64A9096CF4633 /* AppCenterReactNativeAnalytics.xcodeproj */,
+				95EDCBD8001C4303AC16CFAE /* AppCenterReactNativeCrashes.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -662,6 +678,7 @@
 				84F438F31FF27EF4002F035C /* Recovered References */,
 				9CE0BCEE4EE2251261C87415 /* Pods */,
 				3A13B1D05632B6DFCBB8E772 /* Frameworks */,
+				C2AFB459772848D4B3960D47 /* AppCenter-Config.plist */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -1218,6 +1235,7 @@
 				03C5A6CF5BE24AE796627651 /* rubicon-icon-font.ttf in Resources */,
 				26405CBA0A614430B2C2906C /* SimpleLineIcons.ttf in Resources */,
 				DD31E7B11D0A44F0B453E86A /* Zocial.ttf in Resources */,
+				B0906FB480F64A4295F7B733 /* AppCenter-Config.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1525,12 +1543,18 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
+					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
+					"$(SRCROOT)/../node_modules/appcenter-analytics/ios/AppCenterReactNativeAnalytics",
+					"$(SRCROOT)/../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes",
 				);
 				INFOPLIST_FILE = presenttimeTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
@@ -1554,12 +1578,18 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
+					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
+					"$(SRCROOT)/../node_modules/appcenter-analytics/ios/AppCenterReactNativeAnalytics",
+					"$(SRCROOT)/../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes",
 				);
 				INFOPLIST_FILE = presenttimeTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
@@ -1585,6 +1615,9 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
+					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
+					"$(SRCROOT)/../node_modules/appcenter-analytics/ios/AppCenterReactNativeAnalytics",
+					"$(SRCROOT)/../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes",
 				);
 				INFOPLIST_FILE = presenttime/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1610,6 +1643,9 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
+					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
+					"$(SRCROOT)/../node_modules/appcenter-analytics/ios/AppCenterReactNativeAnalytics",
+					"$(SRCROOT)/../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes",
 				);
 				INFOPLIST_FILE = presenttime/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1641,11 +1677,17 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
+					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
+					"$(SRCROOT)/../node_modules/appcenter-analytics/ios/AppCenterReactNativeAnalytics",
+					"$(SRCROOT)/../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes",
 				);
 				INFOPLIST_FILE = "presenttime-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
@@ -1679,11 +1721,17 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
+					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
+					"$(SRCROOT)/../node_modules/appcenter-analytics/ios/AppCenterReactNativeAnalytics",
+					"$(SRCROOT)/../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes",
 				);
 				INFOPLIST_FILE = "presenttime-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
@@ -1718,6 +1766,9 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.presenttime-tvOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1743,6 +1794,9 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
