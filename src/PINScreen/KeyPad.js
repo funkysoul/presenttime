@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 35,
         textAlign: 'center',
         margin: 10,
-        borderRadius: 10,
+        
         borderWidth:1,
         borderColor: 'black'
     },
@@ -55,14 +55,12 @@ export default class KeyPad extends Component {
       this.state = {value: '', result: 'enter code'};
     }
 
-    componentWillReceiveProps(newProps){
-        if(newProps.onResult == "false"){
-            this.setState({result: "Wrong PIN"});
-            
-            setTimeout(()=>{ 
-                this.setState({value: '', result: 'enter code'});   
-            }, 1500);
-        }
+    errorHint(newProps){
+        
+        
+        setTimeout(()=>{ 
+            this.setState({value: '', result: 'enter code'});   
+        }, 1500);
     }
 
     componentWillUnmount(){
