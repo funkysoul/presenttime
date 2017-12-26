@@ -1,0 +1,62 @@
+{
+  "project_info": {
+    "project_number": "961438740113",
+    "firebase_url": "https://present-f5ca7.firebaseio.com",
+    "project_id": "present-f5ca7",
+    "storage_bucket": "present-f5ca7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:961438740113:android:c17fcce3d964f686",
+        "android_client_info": {
+          "package_name": "agency.thekitchen.present"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "961438740113-plbpob6hbiag1toqntqub1v48t84lhfa.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "agency.thekitchen.present",
+            "certificate_hash": "062b05a5ca101bfa1f6e3b40ee9af4fc8c817f48"
+          }
+        },
+        {
+          "client_id": "961438740113-58gborpsbiee45c4bs6p6smve4qa1ooo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDUNVpub-PU_ogPMuN_wvdT-6nFDf1tWIk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "961438740113-58gborpsbiee45c4bs6p6smve4qa1ooo.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "961438740113-c6dafe1g69qsuhh97mjf4et0i3vqs2dt.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "agency.thekitchen.present"
+              }
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
