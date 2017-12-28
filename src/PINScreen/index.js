@@ -42,21 +42,17 @@ class PinScreen extends Component {
 		var userColl = [];
 		firebase.database().ref('employees/' + this.state.uid + "/").once('value').then( (snapshot) => {
 			snapshot.forEach(function(child){
-				
-
 				if(child.val().pin == pinVal && child.val().role == "admin"){
-	              that.props.navigation.navigate( "AdminDash", { data:child.val() } );
+	              that.props.navigation.navigate( "AdminDash", { data:child.val(), uid: that.state.uid } );
 	              console.log(child.val().name);
 	            } else if(child.val().pin == pinVal && child.val().role == "user"){
-	              that.props.navigation.navigate( "StateScreen", { data:child.val() } );
+	              that.props.navigation.navigate( "StateScreen", { data:child.val(), uid: that.state.uid } );
 	              console.log(child.val().name);
 	            } else {
 	              that.refs.keypad.errorHint('false');
 	            }
 			});
 		});
-
-		
 	}
 
 	render() {
