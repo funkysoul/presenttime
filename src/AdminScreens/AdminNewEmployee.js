@@ -12,13 +12,15 @@ import {
 
 import StepIndicator from 'react-native-step-indicator';
 
-
 import { Container, Header, Title, Left, Icon, Right, Button, Body, Content,Text, Card, CardItem, Subtitle, Item, Input, Thumbnail, Label, Form, Switch } from "native-base";
 import firebase from 'react-native-firebase';
 import AnimatedLinearGradient, {presetColors} from 'react-native-animated-linear-gradient';
 import {PagerTabIndicator, IndicatorViewPager, PagerTitleIndicator, PagerDotIndicator, ViewPager} from 'rn-viewpager';
 
 const labels = ["Persönliche Angaben","Bank Angaben","Familie"];
+
+let generatedPin = '';
+
 
 const customStyles = {
   stepIndicatorSize: 25,
@@ -54,6 +56,7 @@ class AdminDash extends Component {
       uid: '',
       userData:{},
       employeeData: {
+        key: '',
         pin: '',
         role: 'user',
         name: '',
@@ -86,29 +89,24 @@ class AdminDash extends Component {
     this.generatePin();
   }
 
-  generatePin () {
+  generatePin() {
     var min = 0,
         max = 9999;
 
     var that = this;
     var userColl = [];
-    var generatedPin = ("0" + (Math.floor(Math.random() * (max - min + 1)) + min)).substr(-4);
+    
+    this.generatedPin = ("0" + (Math.floor(Math.random() * (max - min + 1)) + min)).substr(-4);
 
-    firebase.database().ref('employees/' + that.state.uid + "/").once('value').then( (snapshot) => {
-      snapshot.forEach(function(child){
-        if(child.val().pin == generatedPin){
-          console.log("found same Pin");
-          that.generatePin();
-        } else {
-          console.log("PIN Not in USE");
-          that.setState({employeeData:{pin: generatedPin}});
-        }
-      });
-    });
+    firebase.analytics().logEvent("generated_pin", {generatedPin});
+
+    that.setState({employeeData:{...that.state.employeeData, pin: that.generatedPin}});
+
   }
 
   createNewEmployee(){
     var that = this;
+
     var newEmployeeID = firebase.database().ref('employees/' + that.state.uid + "/").push().key;
     
     var updates = {};
@@ -119,16 +117,18 @@ class AdminDash extends Component {
 
   render() {
     return (
-      	<Container >
+      	<Container>
     			<Content contentContainerStyle={{ flexGrow: 1 }}>
-    				
     					<AnimatedLinearGradient customColors={presetColors.sunrise} speed={4000}/>
-              
               <View style={styles.employeeHeader}>
                 <TouchableOpacity onPress={() => this.pickSingleWithCamera(false)}>
                   <Image style={{width: 200, height: 200}} source={{uri: 'https://firebasestorage.googleapis.com/v0/b/present-f5ca7.appspot.com/o/restaurants%2F-hjki%2Femployees%2F83.jpg?alt=media&token=6ac1a7c1-006e-4d26-a9bb-0559cd7a864d'}} />
                 </TouchableOpacity>
-                <Text>{this.state.employeeData.pin}</Text>
+                <View>
+                  <Text style={styles.pinContainer}>PIN</Text>
+                  <Text style={styles.pinContainer}>{this.state.employeeData.pin}</Text>  
+                </View>
+                
               </View>
               <View style={styles.formcontainer}>
                 <StepIndicator
@@ -137,15 +137,13 @@ class AdminDash extends Component {
                      labels={labels}
                      stepCount = {3}
                 />
-                <Button onPress={()=>this.createNewEmployee()}>
-                  <Text>create</Text>
-                </Button>
+
                 <ViewPager style={{flex: 1}} onPageSelected={(position) => { this.setState({currentPosition: position.position }) }} >
                     <View>
                        <Form style={styles.form}>
                         <Item floatingLabel style={styles.formFieldHalf}>
                           <Label>Name</Label>
-                          <Input />
+                          <Input onChangeText={ ( str ) => this.setState( { employeeData:{ ...this.state.employeeData, name: str } } ) } />
                         </Item>
                         <Item floatingLabel style={styles.formFieldHalf}>
                           <Label>Vorname</Label>
@@ -228,13 +226,14 @@ class AdminDash extends Component {
                             <Switch value={false} />
                             <Label style={styles.switchLabel}>Vertrag unterzeichnet?</Label>
                           </View>
-                          
                         </Form>
+                        <Button rounded success onPress={()=>this.createNewEmployee()} style={{width: "40%", marginTop: 60, marginLeft: "auto", marginRight: "auto"}}>
+                            <Text style={{ marginLeft: 'auto', marginRight: 'auto'}}>Mitarbeiter anlegen</Text>
+                          </Button>
                     </View>
+
                 </ViewPager>
-
     				</View>
-
     			</Content>
     		</Container>
     );
@@ -248,7 +247,8 @@ const styles = StyleSheet.create({
     flex: 0.1,
     paddingTop: 50,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    flexDirection: 'row'
   },
   formcontainer: {
     flex: 0.9,
@@ -276,6 +276,12 @@ const styles = StyleSheet.create({
   },
   switchLabel: {
     marginLeft: 20,
+  },
+  pinContainer: {
+    color: "white",
+    fontSize: 40,
+    marginLeft: 20,
+    
   }
 
 });
