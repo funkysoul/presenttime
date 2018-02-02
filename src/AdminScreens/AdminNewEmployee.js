@@ -17,10 +17,9 @@ import firebase from 'react-native-firebase';
 import AnimatedLinearGradient, {presetColors} from 'react-native-animated-linear-gradient';
 import {PagerTabIndicator, IndicatorViewPager, PagerTitleIndicator, PagerDotIndicator, ViewPager} from 'rn-viewpager';
 
-const labels = ["Persönliche Angaben","Bank Angaben","Familie"];
+
 
 let generatedPin = '';
-
 
 const customStyles = {
   stepIndicatorSize: 25,
@@ -46,6 +45,8 @@ const customStyles = {
   currentStepLabelColor: '#fe7013'
 }
 
+const labels = ["Personelles","Finanzen und Gesundheit","Interne Angaben"];
+
 
 
 class AdminDash extends Component {
@@ -59,19 +60,34 @@ class AdminDash extends Component {
         key: '',
         pin: '',
         role: 'user',
+        salutation: '',
         name: '',
         surname: '',
         street: '',
         zip: '',
         city: '',
-        mobilenr: '',
         birthday: '',
-        landline: '',
+        mobilenr: '',
         email: '',
-        iban: '',
+        contract_begin: '',
+        ahv: '',
         bank: '',
         bank_zip: '',
         bank_city: '',
+        iban: '',
+        healthInsurance: '',
+        healthInsurance_nr: '',
+        civil_status: '',
+        num_children: '',
+        nationality: '',
+        ch_permit: '',
+        employment_type: '', // fest/stunden
+        employment_salary: '', // fest / stunden
+        monthly_hours_min: '',
+        monthly_hours_max: '',
+        location: '',
+        duty: '',
+        message: '',
         contractSigned: '',
 
 
@@ -141,11 +157,15 @@ class AdminDash extends Component {
                 <ViewPager style={{flex: 1}} onPageSelected={(position) => { this.setState({currentPosition: position.position }) }} >
                     <View>
                        <Form style={styles.form}>
-                        <Item floatingLabel style={styles.formFieldHalf}>
+                       <Item floatingLabel style={styles.formFieldThird}>
+                          <Label>Anrede</Label>
+                          <Input onChangeText={ ( str ) => this.setState( { employeeData:{ ...this.state.employeeData, name: str } } ) } />
+                        </Item>
+                        <Item floatingLabel style={styles.formFieldThird}>
                           <Label>Name</Label>
                           <Input onChangeText={ ( str ) => this.setState( { employeeData:{ ...this.state.employeeData, name: str } } ) } />
                         </Item>
-                        <Item floatingLabel style={styles.formFieldHalf}>
+                        <Item floatingLabel style={styles.formFieldThird}>
                           <Label>Vorname</Label>
                           <Input />
                         </Item>
@@ -177,15 +197,39 @@ class AdminDash extends Component {
                           <Label>E-Mail</Label>
                           <Input />
                         </Item>
+
+                        <Item floatingLabel style={styles.formFieldHalf}>
+                          <Label>Zivilstand</Label>
+                          <Input />
+                        </Item>
+
+                        <Item floatingLabel style={styles.formFieldHalf}>
+                          <Label>Anzahl Kinder</Label>
+                          <Input />
+                        </Item>
+
+                        <Item floatingLabel style={styles.formFieldHalf}>
+                          <Label>Aufenthaltsbewilligung</Label>
+                          <Input />
+                        </Item>
+
+                        <Item floatingLabel style={styles.formFieldHalf}>
+                          <Label>Nationalität</Label>
+                          <Input />
+                        </Item>
+                        
                       </Form>
                     </View>
                     <View>
                         <Form style={styles.form}>
+
+                          <Text style={styles.formFieldFull}>Bank Angaben</Text>
+
                           <Item floatingLabel style={styles.formFieldHalf}>
                             <Label>IBAN</Label>
                             <Input />
                           </Item>
-                          <Item floatingLabel style={styles.formFieldFull}>
+                          <Item floatingLabel style={styles.formFieldHalf}>
                             <Label>Finanzinstitut</Label>
                             <Input />
                           </Item>
@@ -197,31 +241,61 @@ class AdminDash extends Component {
                             <Label>Ortschaft</Label>
                             <Input />
                           </Item>
-                          <View style={styles.switch}>
-                            <Switch value={false} />
-                            <Label style={styles.switchLabel}>Vertrag unterzeichnet?</Label>
-                          </View>
+
+
+                          <Text style={styles.formFieldFull}>Krankenkasse</Text>
+
+                          <Item floatingLabel style={styles.formFieldHalf}>
+                            <Label>Krankenkasse</Label>
+                            <Input />
+                          </Item>
+
+                          <Item floatingLabel style={styles.formFieldHalf}>
+                            <Label>Versicherten Nr.</Label>
+                            <Input />
+                          </Item>
+
+                          <Item floatingLabel style={styles.formFieldHalf}>
+                            <Label>AHV</Label>
+                            <Input />
+                          </Item>
+
                           
+                          
+
                         </Form>
                     </View>
                     <View>
                         <Form style={styles.form}>
+                          <Item floatingLabel style={styles.formFieldThird}>
+                            <Label>Vertragsbeginn</Label>
+                            <Input />
+                          </Item>
+                          <Item floatingLabel style={styles.formFieldThird}>
+                            <Label>Anstellungstyp</Label>
+                            <Input />
+                          </Item>
+                          <Item floatingLabel style={styles.formFieldThird}>
+                            <Label>Lohn</Label>
+                            <Input />
+                          </Item>
                           <Item floatingLabel style={styles.formFieldHalf}>
-                            <Label>IBAN</Label>
-                            <Input />
-                          </Item>
-                          <Item floatingLabel style={styles.formFieldFull}>
-                            <Label>Finanzinstitut</Label>
+                            <Label>Min. Stunden Monat</Label>
                             <Input />
                           </Item>
                           <Item floatingLabel style={styles.formFieldHalf}>
-                            <Label>PLZ</Label>
+                            <Label>Max. Stunden Monat</Label>
                             <Input />
                           </Item>
                           <Item floatingLabel style={styles.formFieldHalf}>
-                            <Label>Ortschaft</Label>
+                            <Label>Standort</Label>
                             <Input />
                           </Item>
+                          <Item floatingLabel style={styles.formFieldHalf}>
+                            <Label>Aufgabenbereich</Label>
+                            <Input />
+                          </Item>
+
                           <View style={styles.switch}>
                             <Switch value={false} />
                             <Label style={styles.switchLabel}>Vertrag unterzeichnet?</Label>
@@ -253,6 +327,9 @@ const styles = StyleSheet.create({
   formcontainer: {
     flex: 0.9,
     paddingTop: 40,
+  },
+  formFieldThird: {
+    width: '30%',
   },
   formFieldHalf: {
     width: '46%',

@@ -24,9 +24,11 @@ class StateScreen extends Component {
 
   componentDidMount() {
     let userKey = this.props.navigation.state.params.data.key;
+    let companyKey = this.props.navigation.state.params;
     let timer = this.state.timer;
 
     console.log("mount employee js");
+    console.log(this.props.navigation.state.params);
     
     var newPostKey = firebase.database().ref("times").push().key;
 
@@ -38,7 +40,7 @@ class StateScreen extends Component {
       this.setState({status: "updated"});
 
       setTimeout(()=>{
-        this.setTimePassed();
+        this.setTimePassed(companyKey);
       }, timer)
 
     }).catch(()=>{
@@ -47,8 +49,9 @@ class StateScreen extends Component {
     });
   }
 
-  setTimePassed(){
+  setTimePassed(companyKey){
     this.setState({timePassed:true});
+    this.props.navigation.navigate("PinScreen", {data:companyKey});
   }
 
 
