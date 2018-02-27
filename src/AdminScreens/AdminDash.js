@@ -46,6 +46,21 @@ class AdminDash extends Component {
 		});
 	}
 
+	componentWillReceiveProps(nextProps) {
+		console.log(nextProps);
+	  if(nextProps.navigation.state.params.refreshScene == true){
+	  	var userCollection = [];
+
+		firebase.database().ref('employees/' + this.state.uid).once('value').then( ( snapshot ) => {
+			snapshot.forEach(function(child){
+				userCollection.push(child.val());		
+			});
+
+			this.setState({entries:userCollection});
+		});
+	  } 
+	}
+
   	render() {
 	    return (
 	      	<Container >
@@ -66,7 +81,7 @@ class AdminDash extends Component {
 				<Content contentContainerStyle={{ flexGrow: 1 }}>
 					<AnimatedLinearGradient customColors={presetColors.sunrise} speed={4000}/>
 					<List dataArray={this.state.entries} renderRow={data =>
-		        	  <ListItem style={{backgroundColor: "transparent", paddingTop: 10, paddingBottom:10}} avatar button onPress={() => { this.props.navigation.navigate("NewEmployee", {employeeData:data, editing: true}) }}>
+		        	  <ListItem style={{backgroundColor: "transparent", paddingTop: 10, paddingBottom:10}} avatar button onPress={() => { this.props.navigation.navigate("NewEmployee", {employeeData:data, editing: "true"}) }}>
 		        	  	<Thumbnail size={80} source={{'uri': data.picture }} />
 		        	  	<Body>
 			            	<Text style={styles.employeeName}>{data.name} {data.surname} </Text>

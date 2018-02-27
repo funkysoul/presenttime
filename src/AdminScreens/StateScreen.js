@@ -10,6 +10,8 @@ import { Container, Header, Title, Left, Icon, Right, Button, Body, Content,Text
 import firebase from 'react-native-firebase';
 import AnimatedLinearGradient, {presetColors} from 'react-native-animated-linear-gradient';
 
+import Animation from 'lottie-react-native';
+
 class StateScreen extends Component {
   constructor(props) {
     super(props);
@@ -17,7 +19,7 @@ class StateScreen extends Component {
     this.state = {
       timestamp_now: '',
       status: '',
-      timer: 1000,
+      timer: 2000,
       timePassed: false,
     };
   }
@@ -38,6 +40,7 @@ class StateScreen extends Component {
     firebase.database().ref().update(updates).then(()=>{
       console.log("updated");
       this.setState({status: "updated"});
+      this.animation.play()
 
       setTimeout(()=>{
         this.setTimePassed(companyKey);
@@ -57,17 +60,22 @@ class StateScreen extends Component {
 
   render() {
     return (
-      	<Container>
+        
 
-			<Content contentContainerStyle={{ flexGrow: 1 }}>
-				<View style={{ justifyContent: "center", alignItems: "center", flex: 1, paddingLeft:120, paddingRight:120, paddingTop: 50}}>
-					<AnimatedLinearGradient customColors={presetColors.firefox} speed={4000}/>
-          <Text>"{this.props.navigation.state.params.data.name}"</Text>
-          <Text>{this.state.status}</Text>
-				</View>
-			</Content>
+          <Content contentContainerStyle={{ flexGrow: 1 }}>
+            <View style={{ flex: 1, paddingTop: 50, alignContent: "center"}}>
+              <AnimatedLinearGradient customColors={presetColors.firefox} speed={4000}/>
+              {/*<Text>"{this.props.navigation.state.params.data.name}"</Text>
+              <Text>{this.state.status}</Text>*/}
+              <Animation
+                loop={false}
+                ref={ref => this.animation = ref}
+                style={{width:'100%', height: 200}}
+                source={require('../assets/data/lottie_check.json')}/>
+            </View>
+          </Content>
 
-		</Container>
+
     );
   }
 }

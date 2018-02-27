@@ -60,6 +60,7 @@ class AdminDash extends Component {
     this.state = {
       uid: '',
       userData:{},
+      isEditing: "false",
       employeeData: {
         key: '',
         pin: '0000',
@@ -102,21 +103,39 @@ class AdminDash extends Component {
   }
 
   componentWillMount() {
-    this.setState({employeeData: this.props.navigation.state.params, uid: this.props.navigation.state.params.uid });
-    console.log(this.props.navigation);
-  }
-
-  componentDidMount(){
+    if(this.props.navigation.state.params.editing == "false"){
+      this.generatePin();
+      this.setState({isEditing: "false"});
+      this.setState({employeeData: this.props.navigation.state.params.employeeData, uid: this.props.navigation.state.params.uid });
+    } else {
+      this.setState({isEditing: "true"});
+      this.setState({employeeData: this.props.navigation.state.params.employeeData, uid: this.props.navigation.state.params.uid });
+    }
     
+    console.log("CWM - IS EDITING: " + this.state.isEditing);
+
+
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.navigation.state.params.editing === false){
+    this.setState({currentPosition: 0 });
+    this.pager.setPage(0);
+
+    if(nextProps.navigation.state.params.editing == "false"){
+      this.setState({isEditing: "false"});
+
+      for (var key in this.state.employeeData) {
+          if (this.state.employeeData.hasOwnProperty(key)) {
+              this.state.employeeData[key] = '';
+          }
+      }
+
       this.generatePin();
     } else {
+      this.setState({isEditing: "true"});
       this.setState({employeeData: nextProps.navigation.state.params.employeeData, uid: this.props.navigation.state.params.uid });
     }
-    
+    console.log("CWRP - IS EDITING: " + this.state.isEditing); 
   }
 
   generatePin() {
@@ -136,13 +155,20 @@ class AdminDash extends Component {
 
   createNewEmployee(){
     var that = this;
+    var employeeID = '';
 
-    var newEmployeeID = firebase.database().ref('employees/' + that.state.uid + "/").push().key;
+    if(this.state.isEditing == "true"){
+      employeeID = this.state.employeeData.key;
+    } else {
+      employeeID = firebase.database().ref('employees/' + that.state.uid + "/").push().key;
+    }
     
-    that.setState({employeeData:{...that.state.employeeData, key: this.newEmployeeID}});
+    that.setState({employeeData:{...that.state.employeeData, key: this.employeeID}});
 
     var updates = {};
-    updates['employees/' + that.state.uid + "/" + newEmployeeID] = this.state.employeeData;
+    updates['employees/' + that.state.uid + "/" + employeeID] = this.state.employeeData;
+
+    this.props.navigation.navigate("AdminDash", {refreshScene:true});
 
     return firebase.database().ref().update(updates);
   }
@@ -171,9 +197,9 @@ class AdminDash extends Component {
 
   render() {
     return (
-      	<Container>
-    			<Content contentContainerStyle={{ flexGrow: 1 }}>
-    					<AnimatedLinearGradient customColors={presetColors.sunrise} speed={4000}/>
+        <Container>
+          <Content contentContainerStyle={{ flexGrow: 1 }}>
+              <AnimatedLinearGradient customColors={presetColors.sunrise} speed={4000}/>
               <View style={styles.employeeHeader}>
                 <TouchableOpacity onPress={() => this.pickSingleWithCamera(false)}>
                   <Image style={{width: 200, height: 200}} source={{uri: 'https://firebasestorage.googleapis.com/v0/b/present-f5ca7.appspot.com/o/restaurants%2F-hjki%2Femployees%2F83.jpg?alt=media&token=6ac1a7c1-006e-4d26-a9bb-0559cd7a864d'}} />
@@ -192,7 +218,7 @@ class AdminDash extends Component {
                      stepCount = {3}
                 />
 
-                <ViewPager style={{flex: 1}} onPageSelected={(position) => { this.setState({currentPosition: position.position }) }} >
+                <ViewPager ref={ref => this.pager = ref} style={{flex: 1}} onPageSelected={(position) => { this.setState({currentPosition: position.position }) }} >
                     <View>
                        <Form style={styles.form}>
                        <Item style={styles.formFieldThirdPicker}>
@@ -220,19 +246,19 @@ class AdminDash extends Component {
                         </Item>
                         <Item floatingLabel style={styles.formFieldFull}>
                           <Label>Strasse & Hausnummer</Label>
-                          <Input onChangeText={ ( str ) => this.setState( { employeeData:{ ...this.state.employeeData, street: str } } ) } />
+                          <Input value={this.state.employeeData.street}  onChangeText={ ( str ) => this.setState( { employeeData:{ ...this.state.employeeData, street: str } } ) } />
                         </Item>
                         <Item floatingLabel style={styles.formFieldHalf}>
                           <Label>PLZ</Label>
-                          <Input onChangeText={ ( str ) => this.setState( { employeeData:{ ...this.state.employeeData, zip: str } } ) } />
+                          <Input value={this.state.employeeData.zip}  onChangeText={ ( str ) => this.setState( { employeeData:{ ...this.state.employeeData, zip: str } } ) } />
                         </Item>
                         <Item floatingLabel style={styles.formFieldHalf}>
                           <Label>Ortschaft</Label>
-                          <Input onChangeText={ ( str ) => this.setState( { employeeData:{ ...this.state.employeeData, city: str } } ) } />
+                          <Input value={this.state.employeeData.city}  onChangeText={ ( str ) => this.setState( { employeeData:{ ...this.state.employeeData, city: str } } ) } />
                         </Item>
                         <Item floatingLabel style={styles.formFieldHalf}>
                           <Label>Mobile</Label>
-                          <Input onChangeText={ ( str ) => this.setState( { employeeData:{ ...this.state.employeeData, mobilenr: str } } ) } />
+                          <Input value={this.state.employeeData.mobilenr}  onChangeText={ ( str ) => this.setState( { employeeData:{ ...this.state.employeeData, mobilenr: str } } ) } />
                         </Item>
                         <Item style={styles.formFieldHalfPicker}>
                           <Label>Geburtsdatum</Label>
@@ -397,9 +423,9 @@ class AdminDash extends Component {
                     </View>
 
                 </ViewPager>
-    				</View>
-    			</Content>
-    		</Container>
+            </View>
+          </Content>
+        </Container>
     );
   }
 }
