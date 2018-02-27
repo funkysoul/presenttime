@@ -15,6 +15,9 @@ target 'presenttime' do
   pod 'Firebase/Auth'
   pod 'Firebase/Storage'
 
+  pod 'RSKImageCropper'
+  pod 'QBImagePickerController'
+
 
   target 'presenttimeTests' do
     inherit! :search_paths

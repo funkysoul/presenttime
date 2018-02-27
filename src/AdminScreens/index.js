@@ -28,7 +28,7 @@ const AdminScreenRouter = TabNavigator({
 	              vertical
 	              transparent
 	              active={props.navigationState.index === 1}
-	              onPress={() => props.navigation.navigate("NewEmployee")}>
+	              onPress={() => props.navigation.navigate("NewEmployee", {editing: false})}>
 	              <Icon name="ios-person-add-outline" />
 	              <Text>New Employee</Text>
 	            </Button>

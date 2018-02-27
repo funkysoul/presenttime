@@ -8,11 +8,15 @@ import {
   View,
   Image,
   NativeModules,
+  Platform
 } from 'react-native';
 
 import StepIndicator from 'react-native-step-indicator';
+import DatePicker from 'react-native-datepicker'
 
-import { Container, Header, Title, Left, Icon, Right, Button, Body, Content,Text, Card, CardItem, Subtitle, Item, Input, Thumbnail, Label, Form, Switch } from "native-base";
+import ImagePicker from 'react-native-image-crop-picker';
+
+import { Container, Header, Title, Left, Icon, Right, Button, Body, Content,Text, Card, CardItem, Subtitle, Item, Input, Thumbnail, Label, Form, Switch, Picker } from "native-base";
 import firebase from 'react-native-firebase';
 import AnimatedLinearGradient, {presetColors} from 'react-native-animated-linear-gradient';
 import {PagerTabIndicator, IndicatorViewPager, PagerTitleIndicator, PagerDotIndicator, ViewPager} from 'rn-viewpager';
@@ -58,7 +62,7 @@ class AdminDash extends Component {
       userData:{},
       employeeData: {
         key: '',
-        pin: '',
+        pin: '0000',
         role: 'user',
         salutation: '',
         name: '',
@@ -98,11 +102,21 @@ class AdminDash extends Component {
   }
 
   componentWillMount() {
-    this.setState({userData: this.props.navigation.state.params.data, uid: this.props.navigation.state.params.uid });
+    this.setState({employeeData: this.props.navigation.state.params, uid: this.props.navigation.state.params.uid });
+    console.log(this.props.navigation);
   }
 
   componentDidMount(){
-    this.generatePin();
+    
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.navigation.state.params.editing === false){
+      this.generatePin();
+    } else {
+      this.setState({employeeData: nextProps.navigation.state.params.employeeData, uid: this.props.navigation.state.params.uid });
+    }
+    
   }
 
   generatePin() {
@@ -116,7 +130,7 @@ class AdminDash extends Component {
 
     firebase.analytics().logEvent("generated_pin", {generatedPin});
 
-    that.setState({employeeData:{...that.state.employeeData, pin: that.generatedPin}});
+    that.setState({employeeData:{...that.state.employeeData, pin: this.generatedPin}});
 
   }
 
@@ -125,10 +139,34 @@ class AdminDash extends Component {
 
     var newEmployeeID = firebase.database().ref('employees/' + that.state.uid + "/").push().key;
     
+    that.setState({employeeData:{...that.state.employeeData, key: this.newEmployeeID}});
+
     var updates = {};
     updates['employees/' + that.state.uid + "/" + newEmployeeID] = this.state.employeeData;
 
     return firebase.database().ref().update(updates);
+  }
+
+  onSalutationChange(value: string) {
+    this.setState({employeeData:{...this.state.employeeData, salutation: value}});
+  }
+
+  onMaritalStatusChange(value: string) {
+    this.setState({employeeData:{...this.state.employeeData, civil_status: value}});
+  }
+
+  onPermitChange(value: string) {
+    this.setState({employeeData:{...this.state.employeeData, ch_permit: value}});
+  }
+
+  pickSingleWithCamera() {
+    ImagePicker.openCamera({
+      width: 300,
+      height: 400,
+      cropping: true
+    }).then(image => {
+      console.log(image);
+    });
   }
 
   render() {
@@ -157,65 +195,117 @@ class AdminDash extends Component {
                 <ViewPager style={{flex: 1}} onPageSelected={(position) => { this.setState({currentPosition: position.position }) }} >
                     <View>
                        <Form style={styles.form}>
-                       <Item floatingLabel style={styles.formFieldThird}>
+                       <Item style={styles.formFieldThirdPicker}>
                           <Label>Anrede</Label>
-                          <Input onChangeText={ ( str ) => this.setState( { employeeData:{ ...this.state.employeeData, name: str } } ) } />
+                          <Picker
+                            iosHeader="Select one"
+                            style={styles.salutationPicker}
+                            itemTextStyle={styles.salutationPickerText}
+                            itemStyle={styles.salutationPickerText}
+                            mode="dropdown"
+                            selectedValue={this.state.employeeData.salutation}
+                            onValueChange={this.onSalutationChange.bind(this)}>
+                            <Item label="Herr" value="herr" />
+                            <Item label="Frau" value="frau" />
+                          </Picker>
+                          
                         </Item>
                         <Item floatingLabel style={styles.formFieldThird}>
                           <Label>Name</Label>
-                          <Input onChangeText={ ( str ) => this.setState( { employeeData:{ ...this.state.employeeData, name: str } } ) } />
+                          <Input value={this.state.employeeData.surname} onChangeText={ ( str ) => this.setState( { employeeData:{ ...this.state.employeeData, surname: str } } ) } />
                         </Item>
                         <Item floatingLabel style={styles.formFieldThird}>
                           <Label>Vorname</Label>
-                          <Input />
+                          <Input value={this.state.employeeData.name} onChangeText={ ( str ) => this.setState( { employeeData:{ ...this.state.employeeData, name: str } } ) } />
                         </Item>
                         <Item floatingLabel style={styles.formFieldFull}>
                           <Label>Strasse & Hausnummer</Label>
-                          <Input />
+                          <Input onChangeText={ ( str ) => this.setState( { employeeData:{ ...this.state.employeeData, street: str } } ) } />
                         </Item>
                         <Item floatingLabel style={styles.formFieldHalf}>
                           <Label>PLZ</Label>
-                          <Input />
+                          <Input onChangeText={ ( str ) => this.setState( { employeeData:{ ...this.state.employeeData, zip: str } } ) } />
                         </Item>
                         <Item floatingLabel style={styles.formFieldHalf}>
                           <Label>Ortschaft</Label>
-                          <Input />
+                          <Input onChangeText={ ( str ) => this.setState( { employeeData:{ ...this.state.employeeData, city: str } } ) } />
                         </Item>
                         <Item floatingLabel style={styles.formFieldHalf}>
                           <Label>Mobile</Label>
-                          <Input />
+                          <Input onChangeText={ ( str ) => this.setState( { employeeData:{ ...this.state.employeeData, mobilenr: str } } ) } />
                         </Item>
-                        <Item floatingLabel style={styles.formFieldHalf}>
+                        <Item style={styles.formFieldHalfPicker}>
                           <Label>Geburtsdatum</Label>
-                          <Input />
-                        </Item>
-                        <Item floatingLabel style={styles.formFieldHalf}>
-                          <Label>Festnetz</Label>
-                          <Input />
+                          <DatePicker
+                            
+                            date={this.state.employeeData.birthday}
+                            mode="date"
+                            placeholder="select date"
+                            format="DD-MM-YYYY"
+                            confirmBtnText="Confirm"
+                            cancelBtnText="Cancel"
+                            showIcon={false}
+                            customStyles={{
+                              dateInput: {
+                                marginLeft: 0,
+                                
+                              }
+                            }}
+                            onDateChange={(date) => this.setState( { employeeData:{ ...this.state.employeeData, birthday: date } } ) }
+                          />
+                          
                         </Item>
                         <Item floatingLabel style={styles.formFieldHalf}>
                           <Label>E-Mail</Label>
-                          <Input />
+                          <Input onChangeText={ ( str ) => this.setState( { employeeData:{ ...this.state.employeeData, email: str } } ) } />
                         </Item>
 
-                        <Item floatingLabel style={styles.formFieldHalf}>
+                        <Item style={styles.formFieldHalfPicker}>
                           <Label>Zivilstand</Label>
-                          <Input />
+                          <Picker
+                            iosHeader="Select one"
+                            style={styles.salutationPicker}
+                            itemTextStyle={styles.salutationPickerText}
+                            itemStyle={styles.salutationPickerText}
+                            mode="dropdown"
+                            selectedValue={this.state.employeeData.civil_status}
+                            onValueChange={this.onMaritalStatusChange.bind(this)}>
+                            <Item label="Ledig" value="ledig" />
+                            <Item label="Verheiratet" value="verheiratet" />
+                            <Item label="Geschieden" value="geschieden" />
+                            <Item label="Verlobt" value="verlobt" />
+                            <Item label="Verwitwet" value="verwitwet" />
+                          </Picker>
                         </Item>
 
                         <Item floatingLabel style={styles.formFieldHalf}>
                           <Label>Anzahl Kinder</Label>
-                          <Input />
+                          <Input keyboardType={ (Platform.OS === "ios") ? 'number-pad' : 'numeric' } onChangeText={ ( str ) => this.setState( { employeeData:{ ...this.state.employeeData, num_children: str } } ) } />
                         </Item>
 
-                        <Item floatingLabel style={styles.formFieldHalf}>
+                        <Item style={styles.formFieldHalfPicker}>
                           <Label>Aufenthaltsbewilligung</Label>
-                          <Input />
+                          <Picker
+                            iosHeader="Select one"
+                            style={styles.salutationPicker}
+                            itemTextStyle={styles.salutationPickerText}
+                            itemStyle={styles.salutationPickerText}
+                            mode="dropdown"
+                            selectedValue={this.state.employeeData.ch_permit}
+                            onValueChange={this.onPermitChange.bind(this)}>
+                            <Item label="Ausweis F" value="f" />
+                            <Item label="Ausweis N" value="n" />
+                            <Item label="Ausweis G" value="g" />
+                            <Item label="Ausweis C" value="c" />
+                            <Item label="Ausweis B" value="b" />
+                            <Item label="Ausweis C EU/EFTA" value="c-eu" />
+                            <Item label="Ausweis B EU/EFTA" value="b-eu" />
+                          </Picker>
                         </Item>
 
                         <Item floatingLabel style={styles.formFieldHalf}>
                           <Label>Nationalität</Label>
-                          <Input />
+                          <Input onChangeText={ ( str ) => this.setState( { employeeData:{ ...this.state.employeeData, nationality: str } } ) } />
                         </Item>
                         
                       </Form>
@@ -227,19 +317,19 @@ class AdminDash extends Component {
 
                           <Item floatingLabel style={styles.formFieldHalf}>
                             <Label>IBAN</Label>
-                            <Input />
+                            <Input keyboardType={ (Platform.OS === "ios") ? 'number-pad' : 'numeric' } onChangeText={ ( str ) => this.setState( { employeeData:{ ...this.state.employeeData, iban: str } } ) } />
                           </Item>
                           <Item floatingLabel style={styles.formFieldHalf}>
                             <Label>Finanzinstitut</Label>
-                            <Input />
+                            <Input onChangeText={ ( str ) => this.setState( { employeeData:{ ...this.state.employeeData, bank: str } } ) } />
                           </Item>
                           <Item floatingLabel style={styles.formFieldHalf}>
                             <Label>PLZ</Label>
-                            <Input />
+                            <Input keyboardType={ (Platform.OS === "ios") ? 'number-pad' : 'numeric' } onChangeText={ ( str ) => this.setState( { employeeData:{ ...this.state.employeeData, bank_zip: str } } ) } />
                           </Item>
                           <Item floatingLabel style={styles.formFieldHalf}>
                             <Label>Ortschaft</Label>
-                            <Input />
+                            <Input onChangeText={ ( str ) => this.setState( { employeeData:{ ...this.state.employeeData, bank_city: str } } ) } />
                           </Item>
 
 
@@ -247,17 +337,17 @@ class AdminDash extends Component {
 
                           <Item floatingLabel style={styles.formFieldHalf}>
                             <Label>Krankenkasse</Label>
-                            <Input />
+                            <Input onChangeText={ ( str ) => this.setState( { employeeData:{ ...this.state.employeeData, healthInsurance: str } } ) } />
                           </Item>
 
                           <Item floatingLabel style={styles.formFieldHalf}>
                             <Label>Versicherten Nr.</Label>
-                            <Input />
+                            <Input keyboardType={ (Platform.OS === "ios") ? 'number-pad' : 'numeric' } onChangeText={ ( str ) => this.setState( { employeeData:{ ...this.state.employeeData, healthInsurance_nr: str } } ) } />
                           </Item>
 
                           <Item floatingLabel style={styles.formFieldHalf}>
                             <Label>AHV</Label>
-                            <Input />
+                            <Input keyboardType={ (Platform.OS === "ios") ? 'number-pad' : 'numeric' } onChangeText={ ( str ) => this.setState( { employeeData:{ ...this.state.employeeData, ahv: str } } ) } />
                           </Item>
 
                           
@@ -269,31 +359,31 @@ class AdminDash extends Component {
                         <Form style={styles.form}>
                           <Item floatingLabel style={styles.formFieldThird}>
                             <Label>Vertragsbeginn</Label>
-                            <Input />
+                            <Input onChangeText={ ( str ) => this.setState( { employeeData:{ ...this.state.employeeData, contract_begin: str } } ) } />
                           </Item>
                           <Item floatingLabel style={styles.formFieldThird}>
                             <Label>Anstellungstyp</Label>
-                            <Input />
+                            <Input onChangeText={ ( str ) => this.setState( { employeeData:{ ...this.state.employeeData, employment_type: str } } ) } />
                           </Item>
                           <Item floatingLabel style={styles.formFieldThird}>
                             <Label>Lohn</Label>
-                            <Input />
+                            <Input onChangeText={ ( str ) => this.setState( { employeeData:{ ...this.state.employeeData, employment_salary: str } } ) } />
                           </Item>
                           <Item floatingLabel style={styles.formFieldHalf}>
                             <Label>Min. Stunden Monat</Label>
-                            <Input />
+                            <Input keyboardType={ (Platform.OS === "ios") ? 'number-pad' : 'numeric' } onChangeText={ ( str ) => this.setState( { employeeData:{ ...this.state.employeeData, monthly_hours_min: str } } ) } />
                           </Item>
                           <Item floatingLabel style={styles.formFieldHalf}>
                             <Label>Max. Stunden Monat</Label>
-                            <Input />
+                            <Input keyboardType={ (Platform.OS === "ios") ? 'number-pad' : 'numeric' } onChangeText={ ( str ) => this.setState( { employeeData:{ ...this.state.employeeData, monthly_hours_max: str } } ) } />
                           </Item>
                           <Item floatingLabel style={styles.formFieldHalf}>
                             <Label>Standort</Label>
-                            <Input />
+                            <Input onChangeText={ ( str ) => this.setState( { employeeData:{ ...this.state.employeeData, location: str } } ) } />
                           </Item>
                           <Item floatingLabel style={styles.formFieldHalf}>
                             <Label>Aufgabenbereich</Label>
-                            <Input />
+                            <Input onChangeText={ ( str ) => this.setState( { employeeData:{ ...this.state.employeeData, duty: str } } ) } />
                           </Item>
 
                           <View style={styles.switch}>
@@ -331,8 +421,19 @@ const styles = StyleSheet.create({
   formFieldThird: {
     width: '30%',
   },
+  formFieldThirdPicker: {
+    width: '30%',
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+  },
   formFieldHalf: {
     width: '46%',
+  },
+  formFieldHalfPicker:{
+    width: '46%',
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    paddingTop: 16,
   },
   formFieldFull: {
     width: '94%',
@@ -359,6 +460,14 @@ const styles = StyleSheet.create({
     fontSize: 40,
     marginLeft: 20,
     
+  },
+  salutationPicker: {
+    width:(Platform.OS === 'ios') ? undefined : 120,
+    flexDirection: 'column',
+    paddingLeft: 0,
+  },
+  salutationPickerText: {
+    paddingLeft: 0,
   }
 
 });

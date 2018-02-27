@@ -8,7 +8,7 @@ import {
   	StyleSheet,
   	View,
 } from 'react-native';
-import { Container, Header, Title, Left, Icon, Right, Button, Body, Content,Text, Card, CardItem, Subtitle, Item, Input, List, ListItem, Thumbnail } from "native-base";
+import { Container, Header, Title, Left, Icon, Right, Button, Body, Content,Text, Card, CardItem, Subtitle, Item, Input, List, ListItem, Thumbnail, Picker } from "native-base";
 
 import firebase from 'react-native-firebase';
 import AnimatedLinearGradient, {presetColors} from 'react-native-animated-linear-gradient';
@@ -31,8 +31,6 @@ class AdminDash extends Component {
 	  	uid: this.props.navigation.state.params.uid,
 	  	entries: [],
 	  };
-
-	  console.log(this.props);
 	}
 
 	componentDidMount() {
@@ -45,12 +43,8 @@ class AdminDash extends Component {
 			});
 
 			this.setState({entries:userCollection});
-
-			console.log(that.state.entries);
 		});
 	}
-
-
 
   	render() {
 	    return (
@@ -72,11 +66,11 @@ class AdminDash extends Component {
 				<Content contentContainerStyle={{ flexGrow: 1 }}>
 					<AnimatedLinearGradient customColors={presetColors.sunrise} speed={4000}/>
 					<List dataArray={this.state.entries} renderRow={data =>
-		        	  <ListItem style={{backgroundColor: "transparent", paddingTop: 10, paddingBottom:10}}  avatar button onPress={(data) => { this.props.navigation.navigate("NewEmployee", {employeeData:data}) }}>
+		        	  <ListItem style={{backgroundColor: "transparent", paddingTop: 10, paddingBottom:10}} avatar button onPress={() => { this.props.navigation.navigate("NewEmployee", {employeeData:data, editing: true}) }}>
 		        	  	<Thumbnail size={80} source={{'uri': data.picture }} />
 		        	  	<Body>
 			            	<Text style={styles.employeeName}>{data.name} {data.surname} </Text>
-			            	<Text note>{data.name} {data.surname} </Text>
+			            	<Text note>{data.location} – {data.duty} </Text>
 			            </Body>
 			            <Right>
 			              <Icon name="arrow-forward" style={{ color: '#FFF'}} />
