@@ -11,6 +11,8 @@ import firebase from 'react-native-firebase';
 import AnimatedLinearGradient, {presetColors} from 'react-native-animated-linear-gradient';
 
 import Animation from 'lottie-react-native';
+import lottie_check from '../assets/data/lottie_check.json';
+import lottie_error from '../assets/data/lottie_error.json';
 
 class StateScreen extends Component {
   constructor(props) {
@@ -47,7 +49,8 @@ class StateScreen extends Component {
       }, timer)
 
     }).catch(()=>{
-      console.log("error")
+      console.log("error");
+
       this.setState({status: "something went wrong, please contact your supervisor."});
     });
   }
@@ -65,13 +68,13 @@ class StateScreen extends Component {
           <Content contentContainerStyle={{ flexGrow: 1 }}>
             <View style={{ flex: 1, paddingTop: 50, alignContent: "center"}}>
               <AnimatedLinearGradient customColors={presetColors.firefox} speed={4000}/>
-              {/*<Text>"{this.props.navigation.state.params.data.name}"</Text>
-              <Text>{this.state.status}</Text>*/}
+              {/*<Text>"{this.props.navigation.state.params.data.name}"</Text>*/}
+              <Text>{this.state.status}</Text>
               <Animation
                 loop={false}
                 ref={ref => this.animation = ref}
                 style={{width:'100%', height: 200}}
-                source={require('../assets/data/lottie_check.json')}/>
+                source={lottie_check}/>
             </View>
           </Content>
 

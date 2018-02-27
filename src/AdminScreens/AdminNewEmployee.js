@@ -24,6 +24,7 @@ import {PagerTabIndicator, IndicatorViewPager, PagerTitleIndicator, PagerDotIndi
 
 
 let generatedPin = '';
+let isEditing = '';
 
 const customStyles = {
   stepIndicatorSize: 25,
@@ -103,16 +104,16 @@ class AdminDash extends Component {
   }
 
   componentWillMount() {
-    if(this.props.navigation.state.params.editing == "false"){
+    if(this.props.navigation.state.params.editing == false){
       this.generatePin();
-      this.setState({isEditing: "false"});
+      this.isEditing = false;
       this.setState({employeeData: this.props.navigation.state.params.employeeData, uid: this.props.navigation.state.params.uid });
     } else {
-      this.setState({isEditing: "true"});
+      this.isEditing = true;
       this.setState({employeeData: this.props.navigation.state.params.employeeData, uid: this.props.navigation.state.params.uid });
     }
     
-    console.log("CWM - IS EDITING: " + this.state.isEditing);
+    console.log("CWM - IS EDITING: " + this.isEditing);
 
 
   }
@@ -121,8 +122,10 @@ class AdminDash extends Component {
     this.setState({currentPosition: 0 });
     this.pager.setPage(0);
 
-    if(nextProps.navigation.state.params.editing == "false"){
-      this.setState({isEditing: "false"});
+    console.log(nextProps.navigation.state.params.editing);
+
+    if(nextProps.navigation.state.params.editing == false){
+      this.isEditing = false;
 
       for (var key in this.state.employeeData) {
           if (this.state.employeeData.hasOwnProperty(key)) {
@@ -132,10 +135,10 @@ class AdminDash extends Component {
 
       this.generatePin();
     } else {
-      this.setState({isEditing: "true"});
+      this.isEditing = true;
       this.setState({employeeData: nextProps.navigation.state.params.employeeData, uid: this.props.navigation.state.params.uid });
     }
-    console.log("CWRP - IS EDITING: " + this.state.isEditing); 
+    console.log("CWRP - IS EDITING: " + this.isEditing); 
   }
 
   generatePin() {
@@ -157,7 +160,7 @@ class AdminDash extends Component {
     var that = this;
     var employeeID = '';
 
-    if(this.state.isEditing == "true"){
+    if(this.isEditing == true){
       employeeID = this.state.employeeData.key;
     } else {
       employeeID = firebase.database().ref('employees/' + that.state.uid + "/").push().key;
@@ -283,7 +286,7 @@ class AdminDash extends Component {
                         </Item>
                         <Item floatingLabel style={styles.formFieldHalf}>
                           <Label>E-Mail</Label>
-                          <Input onChangeText={ ( str ) => this.setState( { employeeData:{ ...this.state.employeeData, email: str } } ) } />
+                          <Input value={this.state.employeeData.email} onChangeText={ ( str ) => this.setState( { employeeData:{ ...this.state.employeeData, email: str } } ) } />
                         </Item>
 
                         <Item style={styles.formFieldHalfPicker}>
@@ -306,7 +309,7 @@ class AdminDash extends Component {
 
                         <Item floatingLabel style={styles.formFieldHalf}>
                           <Label>Anzahl Kinder</Label>
-                          <Input keyboardType={ (Platform.OS === "ios") ? 'number-pad' : 'numeric' } onChangeText={ ( str ) => this.setState( { employeeData:{ ...this.state.employeeData, num_children: str } } ) } />
+                          <Input value={this.state.employeeData.num_children} keyboardType={ (Platform.OS === "ios") ? 'number-pad' : 'numeric' } onChangeText={ ( str ) => this.setState( { employeeData:{ ...this.state.employeeData, num_children: str } } ) } />
                         </Item>
 
                         <Item style={styles.formFieldHalfPicker}>
