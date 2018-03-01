@@ -25,6 +25,7 @@ import {PagerTabIndicator, IndicatorViewPager, PagerTitleIndicator, PagerDotIndi
 
 let generatedPin = '';
 let isEditing = '';
+let employeeID = '';
 
 const customStyles = {
   stepIndicatorSize: 25,
@@ -59,6 +60,7 @@ class AdminDash extends Component {
     super(props);
   
     this.state = {
+      
       uid: '',
       userData:{},
       isEditing: "false",
@@ -82,6 +84,7 @@ class AdminDash extends Component {
         bank_city: '',
         iban: '',
         healthInsurance: '',
+        picture: '',
         healthInsurance_nr: '',
         civil_status: '',
         num_children: '',
@@ -102,6 +105,8 @@ class AdminDash extends Component {
 
     };
   }
+
+
 
   componentWillMount() {
     if(this.props.navigation.state.params.editing == false){
@@ -158,18 +163,17 @@ class AdminDash extends Component {
 
   createNewEmployee(){
     var that = this;
-    var employeeID = '';
 
     if(this.isEditing == true){
-      employeeID = this.state.employeeData.key;
+      this.employeeID = this.state.employeeData.key;
     } else {
-      employeeID = firebase.database().ref('employees/' + that.state.uid + "/").push().key;
+      this.employeeID = firebase.database().ref('employees/' + that.state.uid + "/").push().key;
     }
     
     that.setState({employeeData:{...that.state.employeeData, key: this.employeeID}});
 
     var updates = {};
-    updates['employees/' + that.state.uid + "/" + employeeID] = this.state.employeeData;
+    updates['employees/' + that.state.uid + "/" + this.employeeID] = this.state.employeeData;
 
     this.props.navigation.navigate("AdminDash", {refreshScene:true});
 
@@ -189,23 +193,37 @@ class AdminDash extends Component {
   }
 
   pickSingleWithCamera() {
-    ImagePicker.openCamera({
+    var that = this;
+
+    ImagePicker.openPicker({
       width: 300,
       height: 400,
       cropping: true
     }).then(image => {
       console.log(image);
+      firebase.storage()
+        .ref().child('images/' + that.state.uid + '/employees/' + that.employeeID + ".jpg")
+        .putFile(image.sourceURL)
+        .then(uploadedFile => {
+          console.log('Uploaded to firebase:', uploadedFile)
+          this.setState( { employeeData:{ ...this.state.employeeData, picture: uploadedFile.downloadURL } } );
+        })
+        .catch(err => {
+          console.log('Firebase putFile error:', err)
+        })
     });
   }
 
   render() {
+    const employee_picture = this.state.employeeData.picture;
+
     return (
         <Container>
           <Content contentContainerStyle={{ flexGrow: 1 }}>
               <AnimatedLinearGradient customColors={presetColors.sunrise} speed={4000}/>
               <View style={styles.employeeHeader}>
                 <TouchableOpacity onPress={() => this.pickSingleWithCamera(false)}>
-                  <Image style={{width: 200, height: 200}} source={{uri: 'https://firebasestorage.googleapis.com/v0/b/present-f5ca7.appspot.com/o/restaurants%2F-hjki%2Femployees%2F83.jpg?alt=media&token=6ac1a7c1-006e-4d26-a9bb-0559cd7a864d'}} />
+                  <Image style={{width: 200, height: 200}} source={{uri: employee_picture}} />
                 </TouchableOpacity>
                 <View>
                   <Text style={styles.pinContainer}>PIN</Text>
